@@ -1,0 +1,630 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Wangi Pas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: katalog atelier. Masthead rata kiri, profil parfum ditampilkan sebagai
+   deretan gauge (nilai parfum = isi, target pengguna = penanda), form dan hasil berdampingan. */
+:root{
+  --bg:#F1F0F6; --surface:#FFFFFF; --surface-2:#E7E5F0; --fg:#1A1830; --muted:#5E5B78; --line:#D6D3E5;
+  --accent:#E3A21A; --on-accent:#1A1830; --accent-text:#8A5600; --fill:#5B54A8; --ok:#1B7556; --scrim:rgba(14,12,32,.55);
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11101B; --surface:#1A1929; --surface-2:#252339; --fg:#EEEDF7; --muted:#A5A2BE; --line:#35324F;
+    --accent:#F0B53A; --on-accent:#1A1830; --accent-text:#F0B53A; --fill:#8F88E6; --ok:#4FC79C; --scrim:rgba(0,0,0,.65);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11101B; --surface:#1A1929; --surface-2:#252339; --fg:#EEEDF7; --muted:#A5A2BE; --line:#35324F;
+  --accent:#F0B53A; --on-accent:#1A1830; --accent-text:#F0B53A; --fill:#8F88E6; --ok:#4FC79C; --scrim:rgba(0,0,0,.65);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent-text);outline-offset:2px}
+.wrap{max-width:1120px;margin-inline:auto;padding-inline:16px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--f-display);letter-spacing:-.02em;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent-text)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:800;font-size:21px;letter-spacing:-.03em;text-decoration:none;color:var(--fg)}
+.brand svg{width:20px;height:24px;flex:none}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:7px 10px;text-decoration:none;color:var(--muted);font-weight:500;border-bottom:2px solid transparent}
+nav a:hover{color:var(--fg)}
+nav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--accent)}
+main{padding-block:32px 56px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:8px;border:1px solid var(--fg);background:transparent;color:var(--fg);font-weight:600;text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:hover{filter:brightness(.96)}
+.link{background:none;border:0;padding:0;color:var(--accent-text);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:48px;align-items:center;padding-block:12px 40px}
+.hero h1{font-size:clamp(2.1rem,5.2vw,3.7rem);line-height:1.04;font-weight:700;margin-block:14px 18px}
+.hero p.lead{font-size:17px;color:var(--muted);max-width:52ch}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.pcard h3{font-size:20px;font-weight:700;margin-block:4px 2px}
+.pcard .sub{color:var(--muted);font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-block:14px 10px}
+.legend i{display:inline-block;vertical-align:middle;margin-right:6px}
+.legend .k-fill{width:18px;height:8px;border-radius:99px;background:var(--fill)}
+.legend .k-mark{width:3px;height:14px;background:var(--accent)}
+.pcard .score{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:1px solid var(--line);margin-top:14px;padding-top:12px;font-size:13px;color:var(--muted)}
+.pcard .score strong{font-family:var(--f-mono);font-size:26px;color:var(--fg);font-weight:500}
+
+/* gauges */
+.gauges{display:grid;gap:9px}
+.g-row{display:grid;grid-template-columns:104px minmax(0,1fr) 34px;align-items:center;gap:10px;font-size:13px}
+.g-row.no-gap{grid-template-columns:104px minmax(0,1fr) 22px}
+.g-track{position:relative;height:8px;border-radius:99px;background:var(--surface-2)}
+.g-fill{position:absolute;inset:0 auto 0 0;width:calc(var(--v) / 5 * 100%);border-radius:99px;background:var(--fill);transition:width .3s ease}
+.g-mark{position:absolute;top:-4px;left:calc(var(--t) / 5 * 100% - 1.5px);width:3px;height:16px;border-radius:2px;background:var(--accent)}
+.g-gap{font-family:var(--f-mono);text-align:right;color:var(--muted)}
+.g-gap.zero{color:var(--ok);font-weight:500}
+.g-num{font-family:var(--f-mono);text-align:right;color:var(--muted)}
+
+/* sections */
+.sec{padding-block:36px 8px}
+.sec>h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;margin-block:6px 18px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;list-style:none;margin:0;padding:0}
+.steps li{border-top:2px solid var(--fg);padding-top:12px;min-width:0}
+.steps .n{font-family:var(--f-mono);font-size:13px;color:var(--accent-text)}
+.steps h3{font-size:18px;font-weight:700;margin-block:4px 6px}
+.steps p{color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;gap:6px 20px;color:var(--muted);margin-top:8px}
+.facts b{color:var(--fg);font-family:var(--f-mono);font-weight:500}
+
+/* page heads */
+.phead{display:grid;gap:8px;margin-bottom:22px;max-width:70ch}
+.phead h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;line-height:1.1}
+.phead p{color:var(--muted)}
+.notice{border:1px dashed var(--line);border-radius:10px;padding:10px 14px;color:var(--muted);font-size:13px;margin-bottom:20px;background:var(--surface)}
+
+/* toolbar + segmented */
+.toolbar{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:end;margin-bottom:22px}
+.tgroup{display:grid;gap:5px;min-width:0}
+.lbl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface);position:relative}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{flex:1 1 auto;text-align:center;padding:8px 14px;cursor:pointer;font-weight:500;white-space:nowrap;border-right:1px solid var(--line)}
+.seg label:last-of-type{border-right:0}
+.seg input:checked+label{background:var(--fg);color:var(--bg)}
+.seg input:focus-visible+label{outline:2px solid var(--accent-text);outline-offset:-3px}
+.field-in{padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:0;width:100%}
+.tgroup.grow{flex:1 1 220px}
+
+/* catalog */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0;text-align:left;cursor:pointer;width:100%;transition:border-color .15s}
+.card:hover{border-color:var(--fg)}
+.card .tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.tag.o-tengah{border-color:var(--accent-text);color:var(--accent-text)}
+.card h3{font-size:19px;font-weight:700;line-height:1.15}
+.card .meta{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;padding:3px 9px;border-radius:99px;background:var(--surface-2);color:var(--fg)}
+.card .price{margin-top:auto;font-family:var(--f-mono);font-size:14px;font-weight:500}
+.empty{padding:28px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);background:var(--surface)}
+
+/* recommend */
+.rec{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:32px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:20px;min-width:0}
+.panel h2{font-size:20px;font-weight:700}
+.fs{border:0;padding:0;margin:0;display:grid;gap:7px;min-width:0}
+.fs legend,.fs>.lbl{padding:0}
+.hint{font-size:12.5px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--accent-text);margin:2px 0}
+.ends{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted)}
+.ends .mid{font-family:var(--f-mono);color:var(--fg);text-align:center}
+.pill{padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:500}
+.pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.results{display:grid;gap:16px;min-width:0}
+.rhead{display:grid;gap:8px}
+.rhead h2{font-size:22px;font-weight:700}
+.res{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;min-width:0}
+.res-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center}
+.rank{font-family:var(--f-mono);font-size:13px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--bg)}
+.res h3{font-size:20px;font-weight:700;line-height:1.15}
+.res .sub{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.pct{font-family:var(--f-mono);font-size:30px;font-weight:500;line-height:1}
+.pct span{font-size:15px;color:var(--muted)}
+.bar{height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.why{color:var(--muted);font-size:14px}
+.res-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.res-foot .price{font-family:var(--f-mono);font-weight:500}
+details.calc{border-top:1px solid var(--line);padding-top:10px}
+details.calc summary{cursor:pointer;font-weight:600;color:var(--accent-text)}
+.tw{overflow-x:auto;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.num,th.num{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+tr.core td:first-child{font-weight:600}
+tfoot td{border-bottom:0;font-family:var(--f-mono)}
+
+/* method page */
+.prose{max-width:72ch;display:grid;gap:14px}
+.prose h2{font-size:22px;font-weight:700;margin-top:18px}
+.prose ol{margin:0;padding-left:22px;display:grid;gap:8px}
+.formula{font-family:var(--f-mono);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;white-space:nowrap;font-size:14px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:960px}
+.two>div{min-width:0}
+
+/* modal */
+.overlay{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:50}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:16px;width:100%;max-width:560px;max-height:100%;overflow:auto;padding:24px;display:grid;gap:16px;position:relative}
+.modal h2{font-size:26px;font-weight:700;padding-right:44px}
+.modal .x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:18px;line-height:1}
+.pyr{display:grid;gap:10px}
+.pyr-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:baseline}
+
+footer{border-top:1px solid var(--line);padding-block:20px 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:grid;gap:6px}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:28px}
+  .rec{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:420px){
+  .g-row{grid-template-columns:92px minmax(0,1fr) 30px}
+  .res-top{grid-template-columns:auto minmax(0,1fr)}
+  .res-top .pct{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#beranda" data-nav="beranda" aria-label="Wangi Pas, ke beranda">
+      <svg viewBox="0 0 20 24" aria-hidden="true"><rect x="7" y="0.5" width="6" height="4" rx="1" fill="var(--accent)"/><rect x="8.5" y="4.5" width="3" height="2.5" fill="var(--fg)"/><path d="M3 10a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z" fill="var(--fg)"/><path d="M6 14h8" stroke="var(--bg)" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Wangi Pas
+    </a>
+    <nav aria-label="Navigasi utama">
+      <a href="#beranda" data-nav="beranda">Beranda</a>
+      <a href="#katalog" data-nav="katalog">Katalog</a>
+      <a href="#rekomendasi" data-nav="rekomendasi">Cari Rekomendasi</a>
+      <a href="#metode" data-nav="metode">Metode</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- BERANDA -->
+  <section data-view="beranda">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Sistem pendukung keputusan · Profile Matching</div>
+        <h1>Cari parfum yang pas dengan profilmu.</h1>
+        <p class="lead">Atur pilihanmu: siang atau malam, manis atau fresh, cowo, cewe, atau unisex. Sistem membandingkan profil idealmu dengan profil tiap parfum lokal dan Timur Tengah, lalu mengurutkannya dari yang paling mendekati.</p>
+        <div class="cta">
+          <a class="btn primary" href="#rekomendasi" data-nav="rekomendasi">Cari rekomendasi</a>
+          <a class="btn" href="#katalog" data-nav="katalog">Lihat katalog</a>
+        </div>
+        <div class="facts" id="facts"></div>
+      </div>
+      <div class="pcard" id="heroCard" aria-live="polite"></div>
+    </div>
+
+    <div class="sec">
+      <div class="eyebrow">Cara kerja</div>
+      <h2>Tiga langkah dari pilihan sampai peringkat</h2>
+      <ol class="steps">
+        <li><div class="n">Langkah 1</div><h3>Atur profil idealmu</h3><p>Pilih waktu pakai, rasa manis atau fresh, karakter hangat, daya tahan, dan proyeksi. Tandai maksimal dua hal yang paling penting.</p></li>
+        <li><div class="n">Langkah 2</div><h3>Hitung selisihnya</h3><p>Setiap parfum punya nilai 1 sampai 5 di tiap kriteria. Selisih dengan targetmu diubah menjadi bobot, lalu dirata-rata per kelompok.</p></li>
+        <li><div class="n">Langkah 3</div><h3>Urutkan hasilnya</h3><p>Parfum dengan skor tertinggi tampil paling atas, lengkap dengan tabel perhitungan yang bisa dibuka satu per satu.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- KATALOG -->
+  <section data-view="katalog" hidden>
+    <div class="phead">
+      <div class="eyebrow">Katalog</div>
+      <h1>Parfum lokal sampai Timur Tengah</h1>
+      <p>Katalog ini hanya untuk melihat-lihat. Perhitungan rekomendasi ada di halaman Cari Rekomendasi.</p>
+    </div>
+    <div class="notice">Semua nama parfum, brand, harga, dan skor di prototipe ini adalah data contoh fiktif. Ganti dengan data kurasi sendiri sebelum dipakai.</div>
+    <div class="toolbar" id="catBar"></div>
+    <div class="grid" id="catGrid"></div>
+  </section>
+
+  <!-- REKOMENDASI -->
+  <section data-view="rekomendasi" hidden>
+    <div class="phead">
+      <div class="eyebrow">Cari rekomendasi</div>
+      <h1>Atur profil aromamu</h1>
+      <p>Hasil diperbarui setiap kali kamu mengubah pilihan. Tidak perlu mengetik apa pun.</p>
+    </div>
+    <div class="rec">
+      <form class="panel" id="recForm" onsubmit="return false" aria-label="Form profil parfum"></form>
+      <div class="results" id="recResults" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- METODE -->
+  <section data-view="metode" hidden>
+    <div class="phead">
+      <div class="eyebrow">Metode</div>
+      <h1>Bagaimana Profile Matching bekerja di sini</h1>
+      <p>Profile Matching membandingkan profil ideal dengan profil aktual dan menghitung selisihnya. Di aplikasi ini, profil ideal adalah pilihan pengguna dan profil aktual adalah skor tiap parfum.</p>
+    </div>
+    <div class="prose">
+      <h2>Langkah perhitungan</h2>
+      <ol>
+        <li>Pilihan di form diubah menjadi nilai target 1 sampai 5 untuk tujuh kriteria.</li>
+        <li>Selisih (gap) dihitung: nilai parfum dikurangi nilai target.</li>
+        <li>Gap diubah menjadi bobot memakai tabel di bawah.</li>
+        <li>Kriteria dibagi menjadi Core Factor (yang kamu tandai penting) dan Secondary Factor (sisanya). Bobot dirata-rata per kelompok menjadi NCF dan NSF.</li>
+        <li>Skor akhir dihitung dari NCF dan NSF, lalu parfum diurutkan dari skor tertinggi.</li>
+      </ol>
+      <div class="formula">Skor = 0,6 × NCF + 0,4 × NSF &nbsp;&nbsp; Kecocokan = Skor ÷ 5 × 100%</div>
+    </div>
+    <div class="two" style="margin-top:28px">
+      <div>
+        <h2 style="font-size:20px;margin-bottom:10px">Pilihan form menjadi target</h2>
+        <div class="tw"><table id="mapTable"></table></div>
+      </div>
+      <div>
+        <h2 style="font-size:20px;margin-bottom:10px">Tabel bobot gap</h2>
+        <div class="tw"><table id="gapTable"></table></div>
+        <p class="hint" style="margin-top:8px">Gap positif berarti parfum melebihi target, gap negatif berarti kurang dari target. Samakan angka tabel ini dengan versi di referensi sebelum dilaporkan.</p>
+      </div>
+    </div>
+    <div class="prose" style="margin-top:28px">
+      <h2>Catatan data</h2>
+      <p>Filter gender, asal, dan budget bekerja sebagai penyaring sebelum perhitungan, jadi tidak ikut dihitung sebagai kriteria. Data parfum di prototipe ini fiktif. Untuk versi final, kurasi 30 sampai 50 parfum dari halaman resmi brand, lalu beri skor 1 sampai 5 secara terstruktur dan catat siapa yang menilai.</p>
+      <h2>Referensi</h2>
+      <p><a href="https://www.extra.cahyadsn.com/profile_matching" target="_blank" rel="noopener">DSS Profile Matching Method</a> dan <a href="https://www.extra.cahyadsn.com/dss" target="_blank" rel="noopener">Decision Support System Series</a> di extra.cahyadsn.com.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Wangi Pas adalah prototipe tugas sistem AI berbasis Profile Matching.</div>
+    <div>Metode mengacu pada seri Decision Support System di extra.cahyadsn.com. Seluruh data parfum adalah contoh.</div>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" id="modal"></div>
+</div>
+
+<script>
+/* ===== ENGINE ===== */
+const CRIT = [
+  {k:'siang',l:'Cocok siang',g:'waktu'},
+  {k:'malam',l:'Cocok malam',g:'waktu'},
+  {k:'manis',l:'Manis',g:'rasa'},
+  {k:'fresh',l:'Fresh',g:'rasa'},
+  {k:'hangat',l:'Hangat',g:'hangat'},
+  {k:'tahan',l:'Daya tahan',g:'tahan'},
+  {k:'proyeksi',l:'Proyeksi',g:'proyeksi'}
+];
+const GROUPS = {waktu:'Waktu pakai', rasa:'Manis dan fresh', hangat:'Karakter hangat', tahan:'Daya tahan', proyeksi:'Proyeksi'};
+
+const PERFUMES = [
+  {id:1,n:'Senja Kemuning',b:'Nusa Aroma',o:'lokal',g:'unisex',c:'EDP',ml:50,p:279000,notes:[['jeruk bali','melati'],['kemuning','daun teh'],['cendana ringan','musk']],d:'Citrus-floral ringan untuk aktivitas siang di cuaca lembap.',s:{siang:4,malam:3,manis:2,fresh:4,hangat:2,tahan:3,proyeksi:3}},
+  {id:2,n:'Hujan Pertama',b:'Lumbung Wangi',o:'lokal',g:'unisex',c:'EDT',ml:60,p:199000,notes:[['petrichor','bergamot'],['daun mint','lavender'],['musk putih']],d:'Aroma tanah basah yang bersih dan segar, cocok untuk dipakai di dalam ruangan.',s:{siang:5,malam:2,manis:1,fresh:5,hangat:1,tahan:2,proyeksi:2}},
+  {id:3,n:'Kopi Tubruk',b:'Kawi Atelier',o:'lokal',g:'cowo',c:'EDP',ml:50,p:349000,notes:[['kopi','kapulaga'],['kayu manis','tembakau'],['vanila','cendana']],d:'Kopi pekat dengan rempah hangat. Terasa paling enak di malam hari.',s:{siang:2,malam:5,manis:3,fresh:1,hangat:5,tahan:4,proyeksi:4}},
+  {id:4,n:'Kembang Sepatu',b:'Nusa Aroma',o:'lokal',g:'cewe',c:'EDP',ml:40,p:259000,notes:[['leci','raspberi'],['kembang sepatu','peony'],['musk','vanila']],d:'Buah dan bunga yang ceria, manis tapi tidak berat.',s:{siang:4,malam:3,manis:4,fresh:3,hangat:1,tahan:3,proyeksi:3}},
+  {id:5,n:'Cendana Pagi',b:'Lumbung Wangi',o:'lokal',g:'unisex',c:'EDP',ml:50,p:389000,notes:[['jahe','jeruk nipis'],['cendana','cedar'],['ambar','musk']],d:'Kayu cendana yang hangat dengan pembuka jahe. Nyaman dipakai dari pagi sampai malam.',s:{siang:3,malam:4,manis:2,fresh:3,hangat:4,tahan:4,proyeksi:3}},
+  {id:6,n:'Gula Aren',b:'Kawi Atelier',o:'lokal',g:'cewe',c:'EDP',ml:50,p:299000,notes:[['karamel','pir'],['gula aren','kelapa'],['vanila','tonka']],d:'Gourmand manis dengan karamel dan kelapa.',s:{siang:2,malam:4,manis:5,fresh:1,hangat:3,tahan:3,proyeksi:3}},
+  {id:7,n:'Ombak Kuta',b:'Samudra Studio',o:'lokal',g:'cowo',c:'EDT',ml:100,p:225000,notes:[['aqua accord','jeruk'],['garam laut','sage'],['kayu apung','ambar tipis']],d:'Aroma laut yang bersih dan ringan untuk siang yang panas.',s:{siang:5,malam:1,manis:1,fresh:5,hangat:1,tahan:2,proyeksi:3}},
+  {id:8,n:'Rempah Nusantara',b:'Kawi Atelier',o:'lokal',g:'unisex',c:'EDP',ml:50,p:429000,notes:[['cengkeh','lada pink'],['pala','kayu manis'],['kemenyan','patchouli']],d:'Rempah dapur yang dipadukan dengan kemenyan. Pekat dan tahan lama.',s:{siang:1,malam:5,manis:2,fresh:1,hangat:5,tahan:5,proyeksi:4}},
+  {id:9,n:'Teh Melati',b:'Samudra Studio',o:'lokal',g:'cewe',c:'EDT',ml:50,p:189000,notes:[['daun teh','lemon'],['melati sambac'],['musk putih']],d:'Teh dan melati yang lembut untuk dipakai sehari-hari.',s:{siang:5,malam:2,manis:2,fresh:4,hangat:1,tahan:2,proyeksi:2}},
+  {id:10,n:'Jati Embun',b:'Lumbung Wangi',o:'lokal',g:'cowo',c:'EDP',ml:60,p:319000,notes:[['bergamot','adas'],['vetiver','cedar'],['musk','oakmoss']],d:'Kayu hijau yang rapi, cocok untuk kerja sampai acara malam.',s:{siang:4,malam:4,manis:1,fresh:3,hangat:3,tahan:4,proyeksi:3}},
+  {id:11,n:'Serabi Vanila',b:'Nusa Aroma',o:'lokal',g:'cewe',c:'EDP',ml:40,p:239000,notes:[['kelapa'],['pandan','vanila'],['tonka','musk']],d:'Vanila dengan pandan dan kelapa, hangat dan manis.',s:{siang:3,malam:4,manis:5,fresh:2,hangat:2,tahan:3,proyeksi:2}},
+  {id:12,n:'Cakrawala',b:'Samudra Studio',o:'lokal',g:'unisex',c:'EDP',ml:100,p:459000,notes:[['grapefruit','mint'],['iris','lavender'],['amber kayu']],d:'Segar di awal, lalu bergeser ke kayu ambar yang tenang.',s:{siang:4,malam:4,manis:2,fresh:4,hangat:3,tahan:4,proyeksi:4}},
+  {id:13,n:'Oud Malam Hijaz',b:'Qamar Oud',o:'tengah',g:'unisex',c:'EDP',ml:100,p:549000,notes:[['saffron','kapulaga'],['oud','mawar'],['ambar','labdanum']],d:'Oud pekat dengan saffron dan mawar. Tercium jauh dan awet.',s:{siang:1,malam:5,manis:3,fresh:1,hangat:5,tahan:5,proyeksi:5}},
+  {id:14,n:'Musk Rimal',b:'Rimal Atelier',o:'tengah',g:'unisex',c:'EDP',ml:80,p:399000,notes:[['bergamot','lada putih'],['musk','iris'],['ambar','cedar']],d:'Musk bersih dengan sentuhan ambar, tidak menyengat.',s:{siang:3,malam:4,manis:2,fresh:3,hangat:3,tahan:4,proyeksi:3}},
+  {id:15,n:'Mawar Najd',b:'Dahab House',o:'tengah',g:'cewe',c:'EDP',ml:100,p:479000,notes:[['lemon','saffron'],['mawar','oud lembut'],['musk','patchouli']],d:'Mawar yang dalam dengan oud lembut, elegan untuk malam.',s:{siang:2,malam:5,manis:3,fresh:1,hangat:4,tahan:4,proyeksi:4}},
+  {id:16,n:'Amber Dahab',b:'Dahab House',o:'tengah',g:'cowo',c:'EDP',ml:100,p:429000,notes:[['kapulaga','apel'],['kayu manis','ambar'],['vanila','tonka']],d:'Ambar manis dan hangat dengan jejak yang kuat.',s:{siang:2,malam:5,manis:4,fresh:1,hangat:5,tahan:4,proyeksi:5}},
+  {id:17,n:'Sirocco Pagi',b:'Rimal Atelier',o:'tengah',g:'unisex',c:'EDP',ml:100,p:359000,notes:[['jeruk','mint'],['teh hitam','kurma'],['musk','cedar']],d:'Citrus dan teh dengan sedikit manis kurma. Ringan untuk pagi.',s:{siang:5,malam:2,manis:3,fresh:4,hangat:2,tahan:3,proyeksi:3}},
+  {id:18,n:'Vanila Gurun',b:'Qamar Oud',o:'tengah',g:'cewe',c:'EDP',ml:80,p:369000,notes:[['pir','kelapa'],['vanila','melati'],['ambar','musk']],d:'Vanila creamy dengan ambar, manis dan tahan lama.',s:{siang:2,malam:4,manis:5,fresh:1,hangat:3,tahan:4,proyeksi:4}},
+  {id:19,n:'Sultan Leather',b:'Qamar Oud',o:'tengah',g:'cowo',c:'EDP',ml:100,p:619000,notes:[['lada hitam','jeruk'],['kulit','oud'],['kayu','tembakau']],d:'Kulit dan oud yang tegas. Cocok untuk acara malam.',s:{siang:1,malam:5,manis:2,fresh:1,hangat:5,tahan:5,proyeksi:5}},
+  {id:20,n:'Wahat',b:'Dahab House',o:'tengah',g:'unisex',c:'EDT',ml:100,p:289000,notes:[['jeruk bali','kurma'],['teh hijau','melati'],['cedar','musk']],d:'Teh hijau dan melati yang segar, ringan dipakai seharian di luar ruangan.',s:{siang:5,malam:2,manis:2,fresh:5,hangat:1,tahan:2,proyeksi:3}},
+  {id:21,n:'Oud Segar',b:'Rimal Atelier',o:'tengah',g:'cowo',c:'EDP',ml:100,p:459000,notes:[['bergamot','grapefruit'],['oud ringan','lavender'],['ambar','musk']],d:'Oud yang dibuat ringan dengan citrus. Pas untuk siang maupun malam.',s:{siang:4,malam:4,manis:2,fresh:4,hangat:4,tahan:4,proyeksi:4}},
+  {id:22,n:'Karamel Dune',b:'Dahab House',o:'tengah',g:'cewe',c:'EDP',ml:80,p:339000,notes:[['karamel','mandarin'],['gardenia','vanila'],['tonka','musk']],d:'Karamel dan bunga putih yang manis dan lembut.',s:{siang:3,malam:4,manis:5,fresh:2,hangat:2,tahan:3,proyeksi:3}},
+  {id:23,n:'Safran Noir',b:'Qamar Oud',o:'tengah',g:'unisex',c:'EDP',ml:80,p:579000,notes:[['saffron','pir'],['mawar','patchouli'],['oud','ambar']],d:'Saffron dan mawar di atas oud gelap, sedikit manis.',s:{siang:2,malam:5,manis:4,fresh:1,hangat:4,tahan:5,proyeksi:4}},
+  {id:24,n:'Najd Citrus',b:'Rimal Atelier',o:'tengah',g:'cowo',c:'EDT',ml:100,p:249000,notes:[['lemon','jeruk nipis'],['rosemary','neroli'],['musk putih','cedar']],d:'Citrus bersih untuk siang, hampir tanpa jejak di malam hari.',s:{siang:5,malam:1,manis:1,fresh:5,hangat:1,tahan:2,proyeksi:3}}
+];
+
+function gapWeight(g){
+  if (g === 0) return 5;
+  const a = Math.min(Math.abs(g), 4);
+  return g > 0 ? 5.5 - a : 5 - a;
+}
+function buildTarget(p){
+  const t = {};
+  if (p.waktu === 'siang'){ t.siang = 5; t.malam = 2; }
+  else if (p.waktu === 'malam'){ t.siang = 2; t.malam = 5; }
+  else { t.siang = 4; t.malam = 4; }
+  t.manis = p.rasa; t.fresh = 6 - p.rasa;
+  t.hangat = p.hangat; t.tahan = p.tahan; t.proyeksi = p.proyeksi;
+  return t;
+}
+const avg = a => a.length ? a.reduce((x,y) => x + y, 0) / a.length : null;
+function matchPerfume(f, target, core){
+  const rows = CRIT.map(c => {
+    const gap = f.s[c.k] - target[c.k];
+    return {k:c.k, l:c.l, group:c.g, target:target[c.k], val:f.s[c.k], gap, w:gapWeight(gap), core:core.includes(c.g)};
+  });
+  const ncf = avg(rows.filter(r => r.core).map(r => r.w));
+  const nsfRaw = avg(rows.filter(r => !r.core).map(r => r.w));
+  const nsf = nsfRaw === null ? ncf : nsfRaw;
+  const score = 0.6 * ncf + 0.4 * nsf;
+  return {f, rows, ncf, nsf, score, pct: Math.round(score / 5 * 100)};
+}
+function genderOk(sel, g){
+  if (sel === 'cowo') return g === 'cowo' || g === 'unisex';
+  if (sel === 'cewe') return g === 'cewe' || g === 'unisex';
+  return g === 'unisex';
+}
+function recommend(profile, core){
+  const target = buildTarget(profile);
+  const pool = PERFUMES.filter(f =>
+    genderOk(profile.gender, f.g) &&
+    (profile.origin === 'semua' || f.o === profile.origin) &&
+    (profile.maxPrice === null || f.p <= profile.maxPrice));
+  const list = pool.map(f => matchPerfume(f, target, core))
+    .sort((a, b) => (b.score - a.score) || (a.f.p - b.f.p));
+  return {target, poolSize: pool.length, list};
+}
+/* ===== END ENGINE ===== */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rp = n => 'Rp ' + new Intl.NumberFormat('id-ID').format(n);
+const f2 = n => n.toFixed(2).replace('.', ',');
+const ORIGIN = {lokal:'Lokal', tengah:'Timur Tengah'};
+const GENDER = {cowo:'Cowo', cewe:'Cewe', unisex:'Unisex'};
+const signed = g => g > 0 ? '+' + g : g < 0 ? '−' + Math.abs(g) : '0';
+
+function gauge(label, v, t){
+  const hasT = t !== undefined && t !== null;
+  const gap = hasT ? v - t : 0;
+  const style = '--v:' + v + (hasT ? ';--t:' + t : '');
+  return '<div class="g-row' + (hasT ? '' : ' no-gap') + '"><span>' + esc(label) + '</span>' +
+    '<span class="g-track" style="' + style + '"><span class="g-fill"></span>' + (hasT ? '<span class="g-mark"></span>' : '') + '</span>' +
+    (hasT ? '<span class="g-gap' + (gap === 0 ? ' zero' : '') + '">' + signed(gap) + '</span>' : '<span class="g-num">' + v + '</span>') + '</div>';
+}
+
+/* ===== Beranda ===== */
+const EXAMPLE = {profile:{waktu:'malam', rasa:4, hangat:4, tahan:5, proyeksi:4, gender:'cowo', origin:'semua', maxPrice:null}, core:['waktu','rasa']};
+function renderHome(){
+  const lokal = PERFUMES.filter(f => f.o === 'lokal').length, tengah = PERFUMES.length - lokal;
+  $('#facts').innerHTML = '<span><b>' + PERFUMES.length + '</b> parfum contoh</span><span><b>' + lokal + '</b> lokal</span><span><b>' + tengah + '</b> Timur Tengah</span><span><b>7</b> kriteria</span>';
+  const r = recommend(EXAMPLE.profile, EXAMPLE.core), top = r.list[0];
+  $('#heroCard').innerHTML =
+    '<div class="eyebrow">Contoh hasil</div>' +
+    '<h3>' + esc(top.f.n) + '</h3>' +
+    '<div class="sub">Untuk profil: malam, agak manis, hangat, tahan lama</div>' +
+    '<div class="legend"><span><i class="k-fill"></i>Nilai parfum</span><span><i class="k-mark"></i>Target kamu</span><span>Angka kanan: gap</span></div>' +
+    '<div class="gauges">' + top.rows.map(x => gauge(x.l, x.val, x.target)).join('') + '</div>' +
+    '<div class="score"><span>Kecocokan dengan profil</span><strong>' + top.pct + '%</strong></div>';
+}
+
+/* ===== Katalog ===== */
+const cat = {origin:'semua', gender:'semua', q:'', sort:'nama'};
+function seg(name, opts, checked, label){
+  return '<div class="tgroup"><span class="lbl" id="l-' + name + '">' + label + '</span><div class="seg" role="radiogroup" aria-labelledby="l-' + name + '">' +
+    opts.map(o => '<input type="radio" name="' + name + '" id="' + name + '-' + o[0] + '" value="' + o[0] + '"' + (o[0] === checked ? ' checked' : '') + '><label for="' + name + '-' + o[0] + '">' + o[1] + '</label>').join('') +
+    '</div></div>';
+}
+function renderCatBar(){
+  $('#catBar').innerHTML =
+    seg('c-origin', [['semua','Semua'],['lokal','Lokal'],['tengah','Timur Tengah']], cat.origin, 'Asal') +
+    seg('c-gender', [['semua','Semua'],['cowo','Cowo'],['cewe','Cewe'],['unisex','Unisex']], cat.gender, 'Untuk') +
+    '<div class="tgroup grow"><label class="lbl" for="c-q">Cari nama, brand, atau notes</label><input class="field-in" id="c-q" type="search" placeholder="mis. oud, melati, kopi" value="' + esc(cat.q) + '"></div>' +
+    '<div class="tgroup"><label class="lbl" for="c-sort">Urutkan</label><select class="field-in" id="c-sort"><option value="nama">Nama A-Z</option><option value="murah">Harga terendah</option><option value="mahal">Harga tertinggi</option></select></div>';
+  $('#c-sort').value = cat.sort;
+}
+function card(f){
+  const notes = f.notes.flat().slice(0, 4);
+  return '<button class="card" type="button" data-detail="' + f.id + '">' +
+    '<div class="tags"><span class="tag o-' + f.o + '">' + ORIGIN[f.o] + '</span><span class="tag">' + GENDER[f.g] + '</span></div>' +
+    '<h3>' + esc(f.n) + '</h3>' +
+    '<div class="meta">' + esc(f.b) + ' · ' + f.c + ' ' + f.ml + ' ml</div>' +
+    '<div class="chips">' + notes.map(n => '<span class="chip">' + esc(n) + '</span>').join('') + '</div>' +
+    '<div class="price">' + rp(f.p) + '</div></button>';
+}
+function renderCatalog(){
+  const q = cat.q.trim().toLowerCase();
+  let list = PERFUMES.filter(f =>
+    (cat.origin === 'semua' || f.o === cat.origin) &&
+    (cat.gender === 'semua' || f.g === cat.gender) &&
+    (!q || (f.n + ' ' + f.b + ' ' + f.notes.flat().join(' ')).toLowerCase().includes(q)));
+  list.sort((a, b) => cat.sort === 'murah' ? a.p - b.p : cat.sort === 'mahal' ? b.p - a.p : a.n.localeCompare(b.n, 'id'));
+  $('#catGrid').innerHTML = list.length ? list.map(card).join('') :
+    '<div class="empty" style="grid-column:1/-1">Tidak ada parfum yang cocok dengan filter ini. Coba ubah asal, gender, atau kata kunci.</div>';
+}
+
+/* ===== Rekomendasi ===== */
+let core = ['waktu', 'rasa'];
+const TXT = {
+  rasa:['Sangat fresh','Cenderung fresh','Seimbang','Cenderung manis','Sangat manis'],
+  hangat:['Sangat ringan','Ringan','Sedang','Hangat','Sangat hangat'],
+  tahan:['Sebentar','Cukup','Sedang','Awet','Sangat awet'],
+  proyeksi:['Dekat kulit','Lembut','Sedang','Kuat','Sangat kuat']
+};
+function slider(id, label, min, max, step, val, left, right){
+  return '<div class="fs"><label class="lbl" for="' + id + '">' + label + '</label>' +
+    '<input type="range" id="' + id + '" min="' + min + '" max="' + max + '" step="' + step + '" value="' + val + '">' +
+    '<div class="ends"><span>' + left + '</span><span class="mid" id="' + id + '-out"></span><span>' + right + '</span></div></div>';
+}
+function renderForm(){
+  $('#recForm').innerHTML =
+    '<h2>Profil idealmu</h2>' +
+    '<div class="fs">' + seg('gender', [['cowo','Cowo'],['cewe','Cewe'],['unisex','Unisex']], 'cowo', 'Untuk siapa') +
+      '<span class="hint">Cowo dan Cewe juga menampilkan parfum unisex.</span></div>' +
+    seg('origin', [['semua','Semua'],['lokal','Lokal'],['tengah','Timur Tengah']], 'semua', 'Asal parfum') +
+    '<div class="fs">' + seg('waktu', [['siang','Siang'],['malam','Malam'],['versatile','Versatile']], 'malam', 'Waktu pakai') +
+      '<span class="hint">Versatile berarti cocok dipakai siang dan malam.</span></div>' +
+    slider('rasa', 'Manis atau fresh', 1, 5, 1, 4, 'Fresh', 'Manis') +
+    slider('hangat', 'Karakter hangat (woody, amber)', 1, 5, 1, 3, 'Ringan', 'Hangat pekat') +
+    slider('tahan', 'Daya tahan', 1, 5, 1, 4, 'Sebentar', 'Seharian') +
+    slider('proyeksi', 'Proyeksi', 1, 5, 1, 3, 'Dekat kulit', 'Tercium jauh') +
+    slider('budget', 'Budget maksimal', 150000, 700000, 25000, 700000, 'Rp 150.000', 'Tanpa batas') +
+    '<div class="fs"><span class="lbl" id="l-core">Paling penting buatku (maks. 2)</span><div class="pills" role="group" aria-labelledby="l-core">' +
+      Object.keys(GROUPS).map(g => '<button type="button" class="pill" data-core="' + g + '" aria-pressed="' + core.includes(g) + '">' + GROUPS[g] + '</button>').join('') +
+    '</div><span class="hint">Yang kamu tandai menjadi Core Factor dan bobotnya 60% dari skor.</span></div>' +
+    '<button class="btn primary" type="button" id="goResults">Lihat hasil</button>';
+}
+function readProfile(){
+  const v = id => document.getElementById(id).value;
+  const budget = +v('budget');
+  return {
+    gender: document.querySelector('input[name=gender]:checked').value,
+    origin: document.querySelector('input[name=origin]:checked').value,
+    waktu: document.querySelector('input[name=waktu]:checked').value,
+    rasa: +v('rasa'), hangat: +v('hangat'), tahan: +v('tahan'), proyeksi: +v('proyeksi'),
+    maxPrice: budget >= 700000 ? null : budget
+  };
+}
+function updateOutputs(p){
+  ['rasa','hangat','tahan','proyeksi'].forEach(k => { $('#' + k + '-out').textContent = TXT[k][p[k] - 1]; });
+  $('#budget-out').textContent = p.maxPrice === null ? 'Tanpa batas' : 'Maks. ' + rp(p.maxPrice);
+}
+function why(m){
+  const hit = m.rows.filter(r => r.gap === 0).map(r => r.l.toLowerCase());
+  const off = m.rows.filter(r => r.gap !== 0).sort((a, b) => a.w - b.w)[0];
+  let t = hit.length ? 'Pas di ' + hit.slice(0, 4).join(', ') + '.' : 'Tidak ada kriteria yang persis sama dengan targetmu.';
+  if (off) t += ' Paling meleset di ' + off.l.toLowerCase() + ' (gap ' + signed(off.gap) + ').';
+  return t;
+}
+function calcTable(m){
+  return '<details class="calc"><summary>Lihat perhitungan</summary><div class="tw"><table>' +
+    '<thead><tr><th>Kriteria</th><th class="num">Target</th><th class="num">Parfum</th><th class="num">Gap</th><th class="num">Bobot</th><th>Faktor</th></tr></thead><tbody>' +
+    m.rows.map(r => '<tr class="' + (r.core ? 'core' : '') + '"><td>' + esc(r.l) + '</td><td class="num">' + r.target + '</td><td class="num">' + r.val + '</td><td class="num">' + signed(r.gap) + '</td><td class="num">' + f2(r.w) + '</td><td>' + (r.core ? 'Core' : 'Secondary') + '</td></tr>').join('') +
+    '</tbody><tfoot><tr><td colspan="4">NCF (rata-rata Core)</td><td class="num">' + f2(m.ncf) + '</td><td></td></tr>' +
+    '<tr><td colspan="4">NSF (rata-rata Secondary)</td><td class="num">' + f2(m.nsf) + '</td><td></td></tr>' +
+    '<tr><td colspan="4">Skor = 0,6 × NCF + 0,4 × NSF</td><td class="num">' + f2(m.score) + '</td><td></td></tr></tfoot></table></div></details>';
+}
+function resultCard(m, i){
+  const f = m.f;
+  return '<article class="res"><div class="res-top"><div class="rank">' + (i + 1) + '</div>' +
+    '<div><h3>' + esc(f.n) + '</h3><div class="sub">' + esc(f.b) + ' · ' + ORIGIN[f.o] + ' · ' + GENDER[f.g] + ' · ' + f.c + ' ' + f.ml + ' ml</div></div>' +
+    '<div class="pct">' + m.pct + '<span>%</span></div></div>' +
+    '<div class="bar" role="img" aria-label="Kecocokan ' + m.pct + ' persen"><i style="width:' + m.pct + '%"></i></div>' +
+    '<p class="why">' + why(m) + '</p>' +
+    '<div class="chips">' + f.notes.flat().slice(0, 5).map(n => '<span class="chip">' + esc(n) + '</span>').join('') + '</div>' +
+    '<div class="res-foot"><span class="price">' + rp(f.p) + '</span><button class="link" type="button" data-detail="' + f.id + '">Detail parfum</button></div>' +
+    calcTable(m) + '</article>';
+}
+function renderRec(){
+  if (!document.getElementById('rasa')) renderForm();
+  const p = readProfile();
+  updateOutputs(p);
+  const r = recommend(p, core), top = r.list.slice(0, 5);
+  const waktuTxt = {siang:'siang', malam:'malam', versatile:'siang dan malam'}[p.waktu];
+  const summary = [waktuTxt, TXT.rasa[p.rasa - 1].toLowerCase(), 'hangat: ' + TXT.hangat[p.hangat - 1].toLowerCase(), 'awet: ' + TXT.tahan[p.tahan - 1].toLowerCase(), 'proyeksi: ' + TXT.proyeksi[p.proyeksi - 1].toLowerCase()];
+  let html = '<div class="rhead"><h2>' + (top.length ? top.length + ' parfum teratas' : 'Belum ada hasil') + '</h2>' +
+    '<div class="chips">' + summary.map(s => '<span class="chip">' + esc(s) + '</span>').join('') + '</div>' +
+    '<p class="hint">' + r.poolSize + ' dari ' + PERFUMES.length + ' parfum lolos filter gender, asal, dan budget.</p></div>';
+  html += top.length ? top.map(resultCard).join('') :
+    '<div class="empty">Tidak ada parfum yang lolos filter. Naikkan budget, ganti asal ke Semua, atau pilih gender lain.</div>';
+  $('#recResults').innerHTML = html;
+}
+
+/* ===== Metode ===== */
+function renderMethod(){
+  const rows = [
+    ['Siang','Cocok siang 5, cocok malam 2'],
+    ['Malam','Cocok siang 2, cocok malam 5'],
+    ['Versatile','Cocok siang 4, cocok malam 4'],
+    ['Manis atau fresh = n','Manis n, fresh 6 − n'],
+    ['Hangat, daya tahan, proyeksi','Sama dengan nilai slider'],
+    ['Gender, asal, budget','Filter, tidak ikut dihitung']
+  ];
+  $('#mapTable').innerHTML = '<thead><tr><th>Pilihan</th><th>Target</th></tr></thead><tbody>' + rows.map(r => '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>').join('') + '</tbody>';
+  let g = '';
+  for (let x = -4; x <= 4; x++) g += '<tr><td class="num">' + signed(x) + '</td><td class="num">' + f2(gapWeight(x)) + '</td></tr>';
+  $('#gapTable').innerHTML = '<thead><tr><th class="num">Gap</th><th class="num">Bobot</th></tr></thead><tbody>' + g + '</tbody>';
+}
+
+/* ===== Detail ===== */
+let lastFocus = null;
+function openDetail(id){
+  const f = PERFUMES.find(x => x.id === +id); if (!f) return;
+  lastFocus = document.activeElement;
+  const lv = ['Puncak (top)', 'Hati (middle)', 'Dasar (base)'];
+  $('#modal').innerHTML =
+    '<button class="x" type="button" id="mClose" aria-label="Tutup detail">×</button>' +
+    '<div><div class="tags" style="display:flex;gap:6px;margin-bottom:8px"><span class="tag o-' + f.o + '">' + ORIGIN[f.o] + '</span><span class="tag">' + GENDER[f.g] + '</span></div>' +
+    '<h2 id="mTitle">' + esc(f.n) + '</h2><div class="sub mono" style="color:var(--muted);font-size:12.5px;margin-top:4px">' + esc(f.b) + ' · ' + f.c + ' ' + f.ml + ' ml · ' + rp(f.p) + '</div></div>' +
+    '<p>' + esc(f.d) + '</p>' +
+    '<div class="pyr">' + f.notes.map((n, i) => '<div class="pyr-row"><span class="lbl">' + lv[i] + '</span><div class="chips">' + n.map(x => '<span class="chip">' + esc(x) + '</span>').join('') + '</div></div>').join('') + '</div>' +
+    '<div><div class="lbl" style="margin-bottom:8px">Profil (skor contoh 1–5)</div><div class="gauges">' + CRIT.map(c => gauge(c.l, f.s[c.k])).join('') + '</div></div>';
+  $('#overlay').hidden = false;
+  $('#mClose').focus();
+}
+function closeDetail(){
+  $('#overlay').hidden = true;
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+/* ===== Navigasi ===== */
+const VIEWS = ['beranda', 'katalog', 'rekomendasi', 'metode'];
+function show(v, push){
+  if (!VIEWS.includes(v)) v = 'beranda';
+  document.querySelectorAll('[data-view]').forEach(s => { s.hidden = s.dataset.view !== v; });
+  document.querySelectorAll('nav a').forEach(a => {
+    if (a.dataset.nav === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  if (push) { try { history.replaceState(null, '', '#' + v); } catch (e) {} }
+  if (v === 'rekomendasi') renderRec();
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener('click', e => {
+  const nav = e.target.closest('[data-nav]');
+  if (nav) { e.preventDefault(); show(nav.dataset.nav, true); return; }
+  const det = e.target.closest('[data-detail]');
+  if (det) { openDetail(det.dataset.detail); return; }
+  if (e.target.closest('#mClose') || e.target === $('#overlay')) { closeDetail(); return; }
+  const pill = e.target.closest('[data-core]');
+  if (pill) {
+    const g = pill.dataset.core;
+    if (core.includes(g)) { if (core.length > 1) core = core.filter(x => x !== g); }
+    else { core.push(g); if (core.length > 2) core.shift(); }
+    document.querySelectorAll('[data-core]').forEach(b => b.setAttribute('aria-pressed', core.includes(b.dataset.core)));
+    renderRec();
+    return;
+  }
+  if (e.target.closest('#goResults')) { $('#recResults').scrollIntoView({block:'start'}); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#overlay').hidden) closeDetail(); });
+$('#recForm').addEventListener('input', renderRec);
+$('#catBar').addEventListener('input', e => {
+  const t = e.target;
+  if (t.name === 'c-origin') cat.origin = t.value;
+  else if (t.name === 'c-gender') cat.gender = t.value;
+  else if (t.id === 'c-q') cat.q = t.value;
+  else if (t.id === 'c-sort') cat.sort = t.value;
+  renderCatalog();
+});
+
+renderHome(); renderCatBar(); renderCatalog(); renderForm(); renderMethod();
+show((location.hash || '').replace('#', '') || 'beranda', false);
+</script>
+
+</body></html>
